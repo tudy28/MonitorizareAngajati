@@ -1,0 +1,4 @@
+Planificare pe iteratii
+Iteratia1:Login + Rezolvare Bug(Programator) + Consultare lista buguri(Programator)
+Iteratia2:Inregistrare bug nou+Consultare lista buguri + Vizualizare lista buguri code review
+Iteratia3:Aceptare cod review + Refuzare cod review

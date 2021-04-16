@@ -1,0 +1,12 @@
+Orice utilizator fie el verificator sau programator trebuie sa se logheze pentru a intra in aplicatie.
+In cazul in care credentialele introduse nu sunt corecte i se va afisa un mesaj de eroare si va fi nevoit
+sa reintroduca credentialele. In cazul in care aceastea sunt introduse corecte el va fi redirectionat pe pagina
+specifica lui. In cazul in care este un programator are acces la o interfata unde ii va fi permis sa selecteze un bug
+din lista de buguri si sa il rezolve, acesta eliminandu-se din lista de buguri. In cazul in care utilizatorul este 
+un verificator acesta poate sa inregistreze un nou bug. Atat verificatorul cat si programatorul au acces la lista de
+buguri. Unul putand sa stearga buguri din ea(programatorul) iar altul sa adauge buguri in ea(verificatorul).
+
+Cerinta in plus: In momentul in care programatorul incearca sa rezolve un bug acesta va fi nevoit sa introduca intr-o caseta
+text si solutia pentru rezolvarea bugului. In acest moment bugul va fi mutat intr-o alta tabela unde verificatorul va trebui
+sa ii faca code review. In cazul in care verificatorul considera ca bugul a fost rezolvat, bugul va fi inlaturat si din acea tabela
+iar in cazul in care verificatorul considera ca rezolvarea nu este corect bugul va fi mutat inapoi in lista de buguri.
