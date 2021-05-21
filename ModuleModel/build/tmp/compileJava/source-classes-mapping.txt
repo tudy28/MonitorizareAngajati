@@ -1,0 +1,12 @@
+model/Entity.java
+ model.Entity
+model/Verificator.java
+ model.Verificator
+model/Programator.java
+ model.Programator
+model/Utilizator.java
+ model.Utilizator
+model/Bug.java
+ model.Bug
+model/Solutie.java
+ model.Solutie

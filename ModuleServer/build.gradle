@@ -1,0 +1,18 @@
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+mainClassName='StartServer'
+jar{
+    manifest{
+        attributes('Main-Class':'StartServer')
+    }
+    from{
+        configurations.compile.collect{it.isDirectory() ? it : zipTree(it)}
+    }
+}
+
+dependencies {
+    compile project(':ModuleModel')
+    compile project(':ModulePersistance')
+    compile project(':ModuleService')
+}

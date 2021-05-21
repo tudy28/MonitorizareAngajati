@@ -1,0 +1,10 @@
+controller/MessageAlert.java
+ controller.MessageAlert
+controller/ProgramatorController.java
+ controller.ProgramatorController
+controller/VerificatorController.java
+ controller.VerificatorController
+controller/LoginController.java
+ controller.LoginController
+MainFX.java
+ MainFX

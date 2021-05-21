@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <util:properties id="jdbcProps" location="classpath:bd.config.properties"/>
+
+    <bean id="repoProgramatorDB" class="persistance.repository.RepositoryProgramatorDB">
+        <constructor-arg ref="jdbcProps"/>
+    </bean>
+
+    <bean id="repoVerificatorDB" class="persistance.repository.RepositoryVerificatorDB">
+        <constructor-arg ref="jdbcProps"/>
+    </bean>
+
+    <bean id="repoBugDB" class="persistance.repository.RepositoryBugDB">
+        <constructor-arg ref="jdbcProps"/>
+    </bean>
+
+    <bean id="repoSolutieDB" class="persistance.repository.RepositorySolutieDB">
+        <constructor-arg ref="jdbcProps"/>
+    </bean>
+
+    <bean id="ServiceApp" class="service.Service">
+        <constructor-arg ref="repoProgramatorDB"/>
+        <constructor-arg ref="repoVerificatorDB"/>
+        <constructor-arg ref="repoBugDB"/>
+        <constructor-arg ref="repoSolutieDB"/>
+    </bean>
+
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <property name="serviceName" value="BugTracing"/>
+        <property name="service" ref="ServiceApp"/>
+        <property name="serviceInterface" value="bugtracing.service.IService"/>
+        <property name="servicePort" value="1099"/>
+    </bean>
+
+
+</beans>
