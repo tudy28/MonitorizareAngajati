@@ -2,20 +2,20 @@ package model;
 
 public class Solutie extends Entity<Long>{
     private String rezolvare;
-    private Bug bugRezolvat;
+    private Long bugRezolvat;
 
     public Solutie(){ }
 
-    public Solutie(String rezolvare, Bug bugRezolvat){
+    public Solutie(String rezolvare, Long bugRezolvat){
         this.rezolvare=rezolvare;
         this.bugRezolvat=bugRezolvat;
     }
 
-    public Bug getBugRezolvat() {
+    public Long getBugRezolvat() {
         return bugRezolvat;
     }
 
-    public void setBugRezolvat(Bug bugRezolvat) {
+    public void setBugRezolvat(Long bugRezolvat) {
         this.bugRezolvat = bugRezolvat;
     }
 

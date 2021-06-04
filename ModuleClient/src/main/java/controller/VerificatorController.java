@@ -74,8 +74,24 @@ public class VerificatorController extends UnicastRemoteObject implements Observ
         modelBuguri.setAll(StreamSupport.stream(service.findAllBuguriNerezolvate().spliterator(), false).collect(Collectors.toList()));
         tableViewBuguri.setItems(modelBuguri);
 
-        tableSolutiiColumnNumeBug.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBugRezolvat().getNumeBug()));
-        tableSolutiiColumnDescriereBug.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getBugRezolvat().getDescriereBug()));
+        tableSolutiiColumnNumeBug.setCellValueFactory(cellData -> {
+            try {
+                Bug bug= service.findBug(cellData.getValue().getBugRezolvat());
+                return new SimpleStringProperty(bug.getNumeBug());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+        tableSolutiiColumnDescriereBug.setCellValueFactory(cellData -> {
+            try {
+                Bug bug = service.findBug(cellData.getValue().getBugRezolvat());
+                return new SimpleStringProperty(bug.getDescriereBug());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
         modelSolutii.setAll(StreamSupport.stream(service.findAllSolutii().spliterator(), false).collect(Collectors.toList()));
         tableViewSolutii.setItems(modelSolutii);
 
@@ -116,10 +132,48 @@ public class VerificatorController extends UnicastRemoteObject implements Observ
         textAreaSolution.setText(solution);
     }
 
+    public void handleAcceptaSolutie(ActionEvent event) throws Exception {
+        Solutie solutie = tableViewSolutii.getSelectionModel().getSelectedItem();
+        if (solutie == null) {
+            MessageAlert.showErrorMessage(stage, "Alege o solutie mai intai!");
+        } else {
+            service.acceptaSolutie(solutie);
+            MessageAlert.showMessage(stage, Alert.AlertType.INFORMATION, "Succes", "Solutia a fost acceptata cu succes!");
+            textAreaSolution.clear();
+        }
+    }
+
+    public void handleRefuzaSolutie(ActionEvent event) throws Exception {
+        Solutie solutie = tableViewSolutii.getSelectionModel().getSelectedItem();
+        if (solutie == null) {
+            MessageAlert.showErrorMessage(stage, "Alege o solutie mai intai!");
+        }
+        else {
+            service.refuzaSolutie(solutie);
+            MessageAlert.showMessage(stage, Alert.AlertType.INFORMATION, "Succes", "Solutia a fost refuzata cu succes!");
+            textAreaSolution.clear();
+        }
+    }
+
     public void handleLogOut(ActionEvent actionEvent) throws Exception{
         Stage currentStage=(Stage)textAreaSolution.getScene().getWindow();//workaround pentru obitnerea scenei curente :P
         service.logout(userID);
         currentStage.close();
         stage.show();
+    }
+
+    @Override
+    public void notifyModifiedBug(Iterable<Bug> buguri) throws Exception {
+        tableViewBuguri.getItems().clear();
+        modelBuguri.setAll(StreamSupport.stream(buguri.spliterator(),false).collect(Collectors.toList()));
+        tableViewBuguri.setItems(modelBuguri);
+
+    }
+
+    @Override
+    public void notifyModifiedSolution(Iterable<Solutie> solutii) throws Exception {
+        tableViewSolutii.getItems().clear();
+        modelSolutii.setAll(StreamSupport.stream(solutii.spliterator(),false).collect(Collectors.toList()));
+        tableViewSolutii.setItems(modelSolutii);
     }
 }

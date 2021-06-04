@@ -4,6 +4,7 @@ import model.Bug;
 import model.Solutie;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import persistance.repository.Utils.JdbcUtils;
 
 import java.util.List;
@@ -35,7 +36,20 @@ public class RepositorySolutieDB implements IRepositorySolutie{
 
     @Override
     public void delete(Long aLong) {
+        JdbcUtils.initialize();
 
+        try(Session session = JdbcUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query query = session.createQuery("from Solutie where id=:idSolutie", Solutie.class);
+            query.setParameter("idSolutie",aLong);
+            Solutie solutie = (Solutie) query.setMaxResults(1).uniqueResult();
+            session.delete(solutie);
+            session.getTransaction().commit();
+            JdbcUtils.close();
+        }
+        catch (Exception e){
+            JdbcUtils.close();
+        }
     }
 
     @Override

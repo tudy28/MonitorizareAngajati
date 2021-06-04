@@ -29,8 +29,8 @@
       </TableView>
       <TextArea fx:id="textAreaSolution" layoutX="14.0" layoutY="260.0" prefHeight="183.0" prefWidth="338.0" />
       <Label layoutX="14.0" layoutY="243.0" text="Solutia bugului" />
-      <Button layoutX="261.0" layoutY="472.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="91.0" text="Refuza" />
-      <Button layoutX="14.0" layoutY="472.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="91.0" text="Accepta" />
+      <Button layoutX="261.0" layoutY="472.0" mnemonicParsing="false" onAction="#handleRefuzaSolutie" prefHeight="33.0" prefWidth="91.0" text="Refuza" />
+      <Button layoutX="14.0" layoutY="472.0" mnemonicParsing="false" onAction="#handleAcceptaSolutie" prefHeight="33.0" prefWidth="91.0" text="Accepta" />
       <Button layoutX="644.0" layoutY="472.0" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="33.0" prefWidth="105.0" text="Log Out" />
       <Label layoutX="14.0" layoutY="6.0" text="Buguri rezolvate" />
       <Label layoutX="446.0" layoutY="6.0" text="Buguri nerezolvate" />

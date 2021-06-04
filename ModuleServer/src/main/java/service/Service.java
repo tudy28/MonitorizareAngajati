@@ -13,6 +13,8 @@ import persistance.repository.IRepositoryVerificator;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Service implements IService {
     private IRepositoryProgramator repositoryProgramator;
@@ -31,6 +33,38 @@ public class Service implements IService {
         this.repositoryBug = repositoryBug;
         this.repositorySolutie = repositorySolutie;
         this.loggedClients = new ConcurrentHashMap<>();
+    }
+
+    private void notifyModifiedBug(){
+        ExecutorService executorService = Executors.newFixedThreadPool(this.defaultThreadsNumber);
+        loggedClients.forEach((id,client)->{
+            Observer c = loggedClients.get(id);
+            executorService.execute(()->{
+                try{
+                    System.out.println("Notifying [" + id + "]");
+                    c.notifyModifiedBug(this.findAllBuguriNerezolvate());
+                }
+                catch (Exception e){
+                    System.out.println("Error notifying volunteer with ID: " + id + " Message: " + e.getMessage());
+                }
+            });
+        });
+    }
+
+    private void notifyModifiedSolution(){
+        ExecutorService executorService = Executors.newFixedThreadPool(this.defaultThreadsNumber);
+        loggedClients.forEach((id,client)->{
+            Observer c = loggedClients.get(id);
+            executorService.execute(()->{
+                try{
+                    System.out.println("Notifying [" + id + "]");
+                    c.notifyModifiedSolution(this.findAllSolutii());
+                }
+                catch (Exception e){
+                    System.out.println("Error notifying volunteer with ID: " + id + " Message: " + e.getMessage());
+                }
+            });
+        });
     }
 
 
@@ -60,12 +94,39 @@ public class Service implements IService {
     @Override
     public void adaugaBug(Bug bug) throws Exception {
         repositoryBug.add(bug);
+        notifyModifiedBug();
     }
 
     @Override
     public void adaugaSolutie(Solutie solutie) throws Exception {
         repositorySolutie.add(solutie);
+        notifyModifiedBug();
+        notifyModifiedSolution();
     }
+
+    @Override
+    public void acceptaSolutie(Solutie solutie) throws Exception {
+        repositorySolutie.delete(solutie.getId());
+        repositoryBug.delete(solutie.getBugRezolvat());
+        notifyModifiedSolution();
+    }
+
+    @Override
+    public void refuzaSolutie(Solutie solutie) throws Exception {
+        Bug solutionBug = repositoryBug.findById(solutie.getBugRezolvat());
+        solutionBug.setStareBug("nerezolvat");
+        repositoryBug.update(solutionBug,solutionBug.getId());
+        repositorySolutie.delete(solutie.getId());
+        notifyModifiedSolution();
+        notifyModifiedBug();
+    }
+
+
+    @Override
+    public Bug findBug(Long id) throws Exception {
+        return repositoryBug.findById(id);
+    }
+
 
     @Override
     public Iterable<Bug> findAllBuguriNerezolvate() throws Exception {

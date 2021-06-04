@@ -75,11 +75,20 @@ public class ProgramatorController extends UnicastRemoteObject implements Observ
     public void handleRezolvareBug(ActionEvent actionEvent) throws Exception {
         String rezolvareBug = textAreaSolutie.getText();
         Bug resolvedBug = tableViewBuguri.getSelectionModel().getSelectedItem();
-        Solutie solutie= new Solutie(rezolvareBug,resolvedBug);
-        resolvedBug.setStareBug("rezolvat");
-        service.updateBug(resolvedBug,resolvedBug.getId());
-        service.adaugaSolutie(solutie);
-        MessageAlert.showMessage(stage, Alert.AlertType.INFORMATION,"Succes","Solutia ta a fost trimita la verificatori!");
+        if(resolvedBug == null){
+            MessageAlert.showErrorMessage(stage,"Alege un bug mai intai!");
+        }
+        else if (rezolvareBug.equals("")){
+            MessageAlert.showErrorMessage(stage, "Solutia nu poate fi vida!");
+        }
+        else {
+            Solutie solutie = new Solutie(rezolvareBug, resolvedBug.getId());
+            resolvedBug.setStareBug("rezolvat");
+            service.updateBug(resolvedBug, resolvedBug.getId());
+            service.adaugaSolutie(solutie);
+            MessageAlert.showMessage(stage, Alert.AlertType.INFORMATION, "Succes", "Solutia ta a fost trimita la verificatori!");
+            textAreaSolutie.clear();
+        }
     }
 
     public void handleLogOut(ActionEvent actionEvent) throws Exception{
@@ -89,4 +98,15 @@ public class ProgramatorController extends UnicastRemoteObject implements Observ
         stage.show();
     }
 
+    @Override
+    public void notifyModifiedBug(Iterable<Bug> buguri) throws Exception {
+        tableViewBuguri.getItems().clear();
+        modelBuguri.setAll(StreamSupport.stream(buguri.spliterator(),false).collect(Collectors.toList()));
+        tableViewBuguri.setItems(modelBuguri);
+    }
+
+    @Override
+    public void notifyModifiedSolution(Iterable<Solutie> solutii) throws Exception {
+
+    }
 }

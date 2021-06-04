@@ -17,6 +17,12 @@ public interface IService {
 
     void adaugaSolutie(Solutie solutie) throws Exception;
 
+    void acceptaSolutie(Solutie solutie) throws Exception;
+
+    void refuzaSolutie(Solutie solutie) throws Exception;
+
+    Bug findBug(Long id) throws Exception;
+
     Iterable<Bug> findAllBuguriNerezolvate() throws Exception;
 
     Iterable<Solutie> findAllSolutii() throws Exception;

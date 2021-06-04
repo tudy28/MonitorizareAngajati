@@ -21,9 +21,9 @@ persistance/repository/RepositoryVerificatorDB.java
  persistance.repository.RepositoryVerificatorDB
 persistance/repository/Utils/JdbcUtils.java
  persistance.repository.Utils.JdbcUtils
-persistance/repository/RepositoryBugDB.java
- persistance.repository.RepositoryBugDB
 persistance/repository/IRepositoryBug.java
  persistance.repository.IRepositoryBug
+persistance/repository/RepositoryBugDB.java
+ persistance.repository.RepositoryBugDB
 persistance/repository/RepositorySolutieDB.java
  persistance.repository.RepositorySolutieDB

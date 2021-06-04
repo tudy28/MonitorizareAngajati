@@ -17,8 +17,11 @@
             <generator class="increment"/>
         </id>
         <property name="rezolvare" type="string" column="rezolvare"/>
-        <one-to-one name="bugRezolvat" class="model.Bug"/>
+        <property name="bugRezolvat" type="long" column="bugRezolvat"/>
+<!--        <one-to-one name="bugRezolvat" class="model.Bug"/>-->
+<!--        one-to-one nu merge insert in baza de date dar merge select-->
 <!--        <many-to-one name="bugRezolvat" class="model.Bug" column="id_bug" unique="true"/>-->
+<!--            many-to-one merge insert in baza de date dar nu merge select-->
     </class>
 
 </hibernate-mapping>

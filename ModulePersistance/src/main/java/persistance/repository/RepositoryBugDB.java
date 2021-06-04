@@ -36,7 +36,20 @@ public class RepositoryBugDB implements IRepositoryBug{
 
     @Override
     public void delete(Long aLong) {
+        JdbcUtils.initialize();
 
+        try(Session session = JdbcUtils.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            Query query = session.createQuery("from Bug where id=:idBug", Bug.class);
+            query.setParameter("idBug",aLong);
+            Bug bug = (Bug) query.setMaxResults(1).uniqueResult();
+            session.delete(bug);
+            session.getTransaction().commit();
+            JdbcUtils.close();
+        }
+        catch (Exception e){
+            JdbcUtils.close();
+        }
     }
 
     @Override
@@ -61,6 +74,12 @@ public class RepositoryBugDB implements IRepositoryBug{
 
     @Override
     public Bug findById(Long aLong) {
+        JdbcUtils.initialize();
+        try(Session session = JdbcUtils.getSessionFactory().openSession()) {
+                return (Bug) session.get(Bug.class, aLong);
+            } catch (RuntimeException ex) {
+                JdbcUtils.close();
+            }
         return null;
     }
 
